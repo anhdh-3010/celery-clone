@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+*.egg-info/
+.eggs/
+lib/
+lib64/
+parts/
+var/
+wheels/
+*.whl
+.installed.cfg
+*.egg
+MANIFEST
+.DS_Store
