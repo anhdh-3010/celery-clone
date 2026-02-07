@@ -77,5 +77,19 @@ class Worker:
             print(f"[WORKER {self.name}] Acknowledged: {msg.id}")
 
         except Exception as e:
-            self.broker.retry(delivery)
-            print(f"[WORKER {self.name}] Failed: {msg.id} - {e}")
+            msg.retries += 1
+            if msg.retries > task.max_retries:
+                self.broker.dead(delivery)
+                print(f"[WORKER {self.name}] Dead: {msg.id} - {e}")
+                return
+
+            delay = task.default_retry_delay
+            msg.eat = time.time() + delay
+
+            self.broker.schedule(msg)
+            self.broker.ack(delivery)
+
+            print(
+                f"[WORKER {self.name}] Retry {msg.id} in {delay}s "
+                f"(attempt {msg.retries}/{task.max_retries})"
+            )

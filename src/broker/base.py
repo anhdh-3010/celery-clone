@@ -7,6 +7,7 @@ READY = "celery:ready"
 PROCESSING = "celery:processing"
 DEAD = "celery:dead"
 WORKERS = "celery:workers"
+SCHEDULED = "celery:scheduled"
 
 
 class BaseBroker(ABC):
@@ -23,7 +24,7 @@ class BaseBroker(ABC):
         pass
 
     @abstractmethod
-    def retry(self, delivery: Delivery) -> None:
+    def dead(self, delivery: Delivery) -> None:
         pass
 
     @abstractmethod
@@ -36,4 +37,12 @@ class BaseBroker(ABC):
 
     @abstractmethod
     def list_alive_workers(self, timeout: int) -> list:
+        pass
+
+    @abstractmethod
+    def schedule(self, msg: Message) -> None:
+        pass
+
+    @abstractmethod
+    def poll_schedule(self) -> int:
         pass
