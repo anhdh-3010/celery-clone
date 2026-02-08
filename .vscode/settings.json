@@ -1,0 +1,9 @@
+{
+    "cSpell.words": [
+        "brpop",
+        "rpush",
+        "zadd",
+        "zrangebyscore",
+        "zrem"
+    ]
+}
